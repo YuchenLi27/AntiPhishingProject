@@ -1,5 +1,7 @@
 import ssl
+
 from loguru import logger
+
 from utils.constants import EMPTY_RESPONSE
 
 class CertificateCrawler:
