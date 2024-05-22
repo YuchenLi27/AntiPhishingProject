@@ -4,6 +4,8 @@ from loguru import logger
 
 from utils import util_functions
 
+# to see if there is any response then to get the header,
+
 class HttpHeaderCrawler:
     def __init__(self):
         self.response = None
@@ -12,6 +14,7 @@ class HttpHeaderCrawler:
         logger.info("Start collecting http headers for {}", url)
         request_headers = {"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, "
                            "like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+
         try:
             response = requests.get(url, headers=request_headers, timeout = 3000, verify = False)
             if response and response.status_code == 200:
@@ -26,6 +29,7 @@ class HttpHeaderCrawler:
             return dict(self.response.headers)
         else:
             return {}
+
     def get_redirection_chain(self):
         redirection_chain = []
         if self.response and self.response.history:
@@ -35,6 +39,7 @@ class HttpHeaderCrawler:
         if self.response:
             redirection_chain.append(self.response.url)
         return redirection_chain
+
     def get_different_domains_crossed_in_redirection_chain(self):
         redirection_chain = self.get_redirection_chain()
         domains = set()
@@ -42,6 +47,7 @@ class HttpHeaderCrawler:
             current_domain = util_functions.get_hostname(ele)
             domains.add(current_domain)
         return len(domains)
+
     def get_landing_domain(self):
         if self.response:
             if self.response.url.endswith("/"):

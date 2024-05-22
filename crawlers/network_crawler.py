@@ -15,6 +15,7 @@ class NetworkCrawler():
         hop_distance = -1
         average_rtt = -1
         output = ""
+
         try:
             logger.info("Starting ICMP trace route for {}", hostname)
             output = subprocess.check_output(
@@ -22,6 +23,7 @@ class NetworkCrawler():
                 shell= True,
             )
             trace_result = trparse.loads(output.decode())
+
             if not output or (
                 trace_result.hop[-1].probes[0].name is None and
                 len(trace_result.hops[-1].probes) == 1
@@ -33,6 +35,7 @@ class NetworkCrawler():
                 )
         except subprocess.CalledProcessError:
             logger.exception("Error while executing traceroute for {}", hostname)
+
         if output:
             logger.info("Collected raw traceroute for {}", hostname, output)
             trace_result = trparse.loads(output.decode())

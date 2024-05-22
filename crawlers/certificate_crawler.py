@@ -4,6 +4,7 @@ from loguru import logger
 
 from utils.constants import EMPTY_RESPONSE
 
+# try both tls and sslv23 to get certificate
 class CertificateCrawler:
     def __init__(self):
         pass

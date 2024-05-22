@@ -12,7 +12,7 @@ class DNSCrawler:
     def __init__(self):
         pass
     def query_ns(self,tmp_resolver, domain, nsa_candidates):
-        ns_result = tmp_resolver.resolve(domain, rdtype = dns.rdatatype.NS)
+        ns_result = tmp_resolver.resolve(domain, rdtype=dns.rdatatype.NS)
         ns_rrset = ns_result.rrset
         ns_candidates = []
         for rr in ns_rrset:
@@ -20,7 +20,7 @@ class DNSCrawler:
                 continue
             ns_candidates.append(rr.to_text())
         for ns_chosen in ns_candidates:
-            ns_a_result = tmp_resolver.resolve(ns_chosen, rdtype = dns.rdatatype.A)
+            ns_a_result = tmp_resolver.resolve(ns_chosen, rdtype=dns.rdatatype.A)
             ns_a_rrset = ns_a_result.rrset
 
         for rr in ns_a_rrset:
