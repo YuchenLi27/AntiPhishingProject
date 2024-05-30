@@ -34,8 +34,8 @@ class RandomForestModel:
         selected_features = self.select_features(data_matrix)
         cv = StratifiedKFold(n_splits=5, shuffle=True)
         # strartifiedKFold: stratified sample selecting
-        classifier = RandomForestClassifier(n_jobs= -1, n_estimators=50, max_features= "log2", max_depth= 25)
-        logger.info("Training Random Forest with {} features, feature list: {}", (len(selected_features), selected_features)
+        classifier = RandomForestClassifier(n_jobs=-1, n_estimators=50, max_features="log2", max_depth=25)
+        logger.info("Training a model with {} features, feature list: {}", len(selected_features), selected_features)
         self.get_report_with_cross_validation(data_matrix, selected_features, cv, classifier)
 
     def get_report_with_cross_validation(self, data_matrix,features, cv, classifier):
@@ -59,7 +59,7 @@ class RandomForestModel:
             y = y.values.astype(float)
 
             fold_count = 0
-            fig, ax = plt.subplots(nrows = 1, mcols = 1)
+            fig, ax = plt.subplots(nrows =1, mcols =1)
             importance_dict = dict()
             for train, test in cv.split(x, y):
                 fold_count += 1
@@ -68,6 +68,7 @@ class RandomForestModel:
 
                 for i, ele in enumerate(model.feature_importances_):
                     importance = (ele / 5) + (importance_dict.get(features[i], 0) /5)
+                    # the value of key mapping, to gain the average value of 5 folds
                     importance_dict[features[i]] = importance
 
                 y_pred = model.predict(x[test])
@@ -159,7 +160,7 @@ class RandomForestModel:
                 plt.yticks(tick_marks, classes)
 
                 fmt = ".2f"
-                thresh = cm.max() / 2.
+                thresh = cm.max() / 2. # /2.0 turn int to float
                 for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
                     plt.text(j, i, format(cm[i, j], fmt),# add text into the plot
                              horizontalalignment="center",
@@ -238,12 +239,13 @@ class RandomForestModel:
                 #fillna replaces the Null values w/ a specified value,
                 # If True: the replacing is done on the current DataFrame.
                 targets = data_matrix[target_column].unique()
-                # to see the unique values in a particular column
+                # to see how many unique values in a particular column, it returns the unique values
+                # panda 's array math functions
                 logger.info("Encoding column {}", target_column)
                 le = LabelEncoder()
                 # label certain value to certain ele
                 le.fit(targets)
                 data_matrix[target_column] = le.transform(data_matrix[target_column])
-
+                # encode the string to number
             def mask_na_values(self, data_matrix):
                 data_matrix.fillna(value=-1, inplace=True)

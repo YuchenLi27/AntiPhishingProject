@@ -16,7 +16,7 @@ class HttpHeaderCrawler:
                            "like Gecko) Chrome/120.0.0.0 Safari/537.36"}
 
         try:
-            response = requests.get(url, headers=request_headers, timeout = 3000, verify = False)
+            response = requests.get(url, headers=request_headers, timeout=3000, verify=False)
             if response and response.status_code == 200:
                 self.response = response
                 logger.info("Successfully collected http headers for{} as {}", url, response)
@@ -33,6 +33,7 @@ class HttpHeaderCrawler:
     def get_redirection_chain(self):
         redirection_chain = []
         if self.response and self.response.history:
+            # history should be taken care, and also able to cope the corner case
             for r in self.response.history:
                 if r.url:
                     redirection_chain.append(self.response.url)
@@ -49,7 +50,9 @@ class HttpHeaderCrawler:
         return len(domains)
 
     def get_landing_domain(self):
+        # landing domain: the lastest domain we have
         if self.response:
+            # sometimes the landing domain has a slash at the end which would result in crawl error
             if self.response.url.endswith("/"):
                 return self.response.url[:-1]
             return self.response.url
