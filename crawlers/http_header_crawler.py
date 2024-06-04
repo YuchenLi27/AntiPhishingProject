@@ -6,10 +6,12 @@ from utils import util_functions
 
 # to see if there is any response then to get the header,
 
+
 class HttpHeaderCrawler:
     def __init__(self):
         self.response = None
         pass
+
     def get_response(self, url):
         logger.info("Start collecting http headers for {}", url)
         request_headers = {"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, "
@@ -24,6 +26,7 @@ class HttpHeaderCrawler:
                 logger.error("Response timeout or response code is not 200 {}", response.__dict__)
         except Exception as e:
             logger.exception("HTTP request failed for {}, url")
+
     def scan_http_headers(self):
         if self.response:
             return dict(self.response.headers)

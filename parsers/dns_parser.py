@@ -56,6 +56,8 @@ class DNSParser:
 
         if "ptr_record_parsed" in dns_records and dns_records["ptr_record_parsed"]:
             result["exist_ptr_record"] = 1
+            # match hostname and web name, if so, it means good one.
+            # max to see the max degree of matching.
             result["reverse_ptr_record"] = max(
                 result["reverse_dns_look_ip_matching"],
                 self.get_reverse_look_up_matching(dns_records['ptr_record_parsed'],url)
@@ -88,3 +90,251 @@ class DNSParser:
 
         return result
 
+    def get_reverse_look_up_matching(self,ptr_record, url) -> str:
+        """
+        Get the matching ratio of the DNS reverse look up resulted url with the origin url.
+        :param ptr_record.
+        :param url: original url we used for crawling.
+        :return: String representation of matching ratio in Decimal.
+        """
+        max_match_ratio = 0.0
+        for ele in ptr_record:
+            ptr_addr = ele["addr"]
+            match_ratio = SequenceMatcher(None, ptr_addr, url).ratio() # to get the longest contiguous matching subsequence
+            max_match_ratio = max(max_match_ratio, match_ratio)
+
+        return convert_float_to_str(max_match_ratio)
+
+# for testing
+if __name__ == "__main__":
+    low_level_data = {
+        "a_record_parsed": {
+            "L": [
+                {
+                    "M": {
+                        "addr": {
+                            "S": ""
+                        },
+                        "ttl": {
+                            "N": "300"
+                        },
+                        "ip": {
+                            "S": "142.250.190.99"
+                        }
+                    }
+                }
+            ]
+        },
+        "nsaaaa_record_parsed": {
+            "L": [
+                {
+                    "M": {
+                        "addre": {
+                            "S": "ns1.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "2001:4860:4802:32::a"
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addre": {
+                            "S": "ns3.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "2001:4860:4802:36::a"
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addre": {
+                            "S": "ns4.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "2001:4860:4802:38::a"
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addre": {
+                            "S": "ns2.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "2001:4860:4802:34::a"
+                        }
+                    }
+                }
+            ]
+        },
+        "ptr_record_raw": {
+            "S": "id 53690\nopcode QUERY\nrcode NOERROR\nflags QR RD RA\nedns 0\npayload 65494\n;QUESTION\n99.190.250.142.in-addr.arpa. IN PTR\n;ANSWER\n99.190.250.142.in-addr.arpa. 300 IN PTR ord37s35-in-f3.1e100.net.\n;AUTHORITY\n;ADDITIONAL"
+        },
+        "ns_record_parsed": {
+            "L": [
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns1.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": ""
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns3.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": ""
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns4.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": ""
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns2.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": ""
+                        }
+                    }
+                }
+            ]
+        },
+        "nsa_record_parsed": {
+            "L": [
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns1.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "216.239.32.10"
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns3.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "216.239.36.10"
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns4.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "216.239.38.10"
+                        }
+                    }
+                },
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ns2.google.com."
+                        },
+                        "ttl": {
+                            "N": "345600"
+                        },
+                        "ip": {
+                            "S": "216.239.34.10"
+                        }
+                    }
+                }
+            ]
+        },
+        "aaaa_record_parsed": {
+            "L": [
+                {
+                    "M": {
+                        "addr": {
+                            "S": ""
+                        },
+                        "ttl": {
+                            "N": "300"
+                        },
+                        "ip": {
+                            "S": "2607:f8b0:4009:80b::2003"
+                        }
+                    }
+                }
+            ]
+        },
+        "dns_record_raw": {
+            "S": "id 25457\nopcode QUERY\nrcode NOERROR\nflags QR AA RD\nedns 0\npayload 512\n;QUESTION\ngoogle.rw. IN A\n;ANSWER\ngoogle.rw. 300 IN A 142.250.190.99\n;AUTHORITY\n;ADDITIONAL"
+        },
+        "ptr_records_parsed": {
+            "L": [
+                {
+                    "M": {
+                        "addr": {
+                            "S": "ord37s35-in-f3.1e100.net."
+                        },
+                        "ttl": {
+                            "N": "300"
+                        },
+                        "ip": {
+                            "S": "142.250.190.99"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+    from boto3.dynamodb.types import TypeDeserializer
+    deserializer = TypeDeserializer()
+    python_data = {k: deserializer.deserialize(v) for k, v in low_level_data.items()}
+    DNSParser().parse_dns("google.com", python_data)

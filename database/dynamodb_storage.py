@@ -8,7 +8,7 @@ import decimal
 from boto3.dynamodb.types import DYNAMODB_CONTEXT
 
 class DynamoDBStorage:
-    def __init__(self,dynamodb_table_name):
+    def __init__(self, dynamodb_table_name):
         # these two lines used to skip the dynamodb's decimal precision check
         # Inhibit Inexact Exceptions
         DYNAMODB_CONTEXT.traps[decimal.Inexact] = 0
@@ -37,12 +37,14 @@ class DynamoDBStorage:
                 #json.dumps():  python dic to json string, then we can print log, only for json
             except Exception as e:
                 logger.exception("Put item retry failed. Ignore the item")
+
     def check_existence(self, url):
         items = self.get_item(url)
         if items:
             return True
         else:
             return False
+
     def get_item(self, url):
         try:
             response = self.table.query(KeyConditionExpression=Key('url').eq(url))

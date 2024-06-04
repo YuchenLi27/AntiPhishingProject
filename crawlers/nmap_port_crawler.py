@@ -6,7 +6,7 @@ from utils.constants import EMPTY_RESPONSE
 class NmapPortCrawler():
     def __init__(self):
         pass
-
+# network map
     def nmap_scan(self,url) -> str:
         logger.info("Start nmap scar for {}", url)
         nmap_output = EMPTY_RESPONSE

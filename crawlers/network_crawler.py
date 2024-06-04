@@ -7,9 +7,11 @@ import subprocess
 
 from utils.util_functions import convert_float_to_str
 
+
 class NetworkCrawler():
     def __init__(self):
         pass
+
     def trace_route(self,hostname):
         logger.info("Start collecting trace route for {}", hostname)
         hop_distance = -1 # missing and 0 is not same, 0 could be a distance from a to a

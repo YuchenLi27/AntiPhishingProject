@@ -4,6 +4,7 @@ import re
 class UrlLexical:
     def __init__(self):
         pass
+
     def get_url_lexical(self, url):
         ip_address_in_hostname = self.__check_ip_address(url)
         num_of_dots = len(re.findall("\.", url))
