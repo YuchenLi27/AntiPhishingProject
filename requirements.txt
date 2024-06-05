@@ -1,0 +1,18 @@
+trparse == 0.3.0
+loguru == 0.7.2
+requests == 2.31.0
+dnspython == 2.3.0
+urllib3 == 1.26.6
+boto3 == 1.33.13
+simplejson == 3.19.2
+botocore~=1.33.13
+pyopenssl == 24.1.0
+numpy==1.24.4
+pandas==2.0.3
+scikit-learn==1.3.2
+matplotlib==3.7.5
+scipy==1.10.1
+
+# snapshort the versions we need, install all in one going, dafultly the last version is not compactable
+# version conflits: try everything
+
