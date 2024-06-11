@@ -8,6 +8,8 @@ URL_LIST_SIZE = 35000
 CSV_ML_DATA_DELIMITER = ","
 CSV_ML_DATA_QUOTE_CHAR = "|"
 CSV_ML_DATA_FILENAME = "ml_model_input.csv"
+
+# goal of ml_field_names is to write csv
 ML_FIELD_NAMES = [
     # certificate extension features
     "authority_info_access", "authority_info_access_critical",
@@ -153,7 +155,11 @@ ML_FEATURES = [
     "match_issuer_o_cn", "match_issuer_o_ou", "match_issuer_subject_c", "match_issuer_subject_cn",
     "match_subject_o_cn", "match_subject_o_ou", "match_website_altname", "match_website_issuercn",
     "match_website_subjectcn",
+    # "match_website_altname": dns name maybe different, but certificate can be assigned to
+    # more than one domain name, this can help us prevert more mislabelling.
     "is_prohibited_issuer", "is_prohibited_subject", "is_trusted_ca",
+    #prohibited: as we know, it is not trusted that if the certificate comes from the local net or wild card.
+    # is_trusted_ca: is it from the trusted institutions?
 
     # certificate validation time features
     "diff_not_after_timestamp",
@@ -165,6 +171,7 @@ ML_FEATURES = [
 
     # traceroute result features
     "average_rtt", "hop_distance",
+    #
 
     # nmap port scan result features
     "device_type",
@@ -243,8 +250,9 @@ ML_FEATURES = [
     "origin_url_num_of_path_token", "origin_url_num_of_slash",
 ]
 
-ML_LABEL = "label"
+ML_LABEL = "label" # goal of this project
 
+# random forest only can handle num not string, convert string to num
 STRING_FEATURES = [
     "signature_algorithm",
     "device_type",

@@ -10,18 +10,19 @@ def get_hostname(url):
 
     full_url = "https://{}"
     if not url.startswith("http://") and not url.startswith("https://"):
-        full_url = full_url.format(url)
+        full_url = full_url.format(url) #if we use requrest, we have to add protocol on, so we need line 11 and 13
     else:
         full_url = url
 
     full_url = full_url.strip()
-    parse_result = urlparse(full_url)
+    parse_result = urlparse(full_url) # help us decode  http/https:// to hostname, dns etc parts.
     return parse_result.hostname
 
 def get_legitimate_url_list():
     legitimate_url_list = []
     with open("input_files/majestic_million.csv") as legitimate_urls:
         csv_reader = csv.DictReader(legitimate_urls, delimiter=",", quotechar='"')
+        # delimiter help us to divide, quotechar helps us to escape " within the text.
         #Create an object which operates like a regular writer but maps dictionaries onto output rows.
         # The fieldnames parameter is a sequence of keys that identify the order in which values
         # in the dictionary passed to the writerow() method are written to file legitimate_urls.

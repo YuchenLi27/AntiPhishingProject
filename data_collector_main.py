@@ -15,6 +15,7 @@ def main():
                 level="INFO",
                 enqueue=True)
     pool = ThreadPool(processes=MAX_CRAWLER_THREAD)
+    #
 
     try:
         phishing_url_list = get_phishing_url_list()
@@ -48,6 +49,7 @@ def main():
         pool.join()
 
     logger.info("Completed crawl data for {} legitimate urls!", len(legitimate_url_list))
+
 
 def run_crawl_thread(url, label):
     # use a new DataCollector instance each time to prevent data collision or race condition

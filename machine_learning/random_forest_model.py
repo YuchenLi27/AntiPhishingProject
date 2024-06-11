@@ -243,10 +243,12 @@ class RandomForestModel:
         targets = data_matrix[target_column].unique()
         # to see how many unique values in a particular column, it returns the unique values
         # panda 's array math functions
+        # unique() helps us get the list of the unique value,
         logger.info("Encoding column {}", target_column)
         le = LabelEncoder()
         # label certain value to certain ele
         le.fit(targets)
+        # encode the targets to transform the value
         data_matrix[target_column] = le.transform(data_matrix[target_column])
         # encode the string to number
 
